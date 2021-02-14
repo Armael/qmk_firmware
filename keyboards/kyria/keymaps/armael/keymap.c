@@ -27,27 +27,23 @@ enum layers {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |   B  |   É  |   P  |   O  |   È  |                              |   ^! |   V  |   D  |   L  |   J  |  W     |
+ * |  Tab   |   B  |   É  |   P  |   O  |   È  |                              |   ^! |   V  |   D  |   L  |   J  |  W     |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * | Shift  |  A   |  U   |  I   |  E   |   ,  |                              |   C  |  T   |  S   |   R  |   N  |   M    |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |   Z    |   À  |   Y  |   X  |   .  |   K  | esc  |      |  |      |      |   '? |   Q  |  G   |  H   |   F  |  Ç     |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |Aleph | Alt  | Space| Enter|      |  |bkspc | Enter| Aleph|      | Bet  |
- *                        |      |      | Bet  |      |      |  |      |      |      |      |      |
+ *                        |Aleph |Super | Space| Enter|bkspc |  |bkspc | Enter| Aleph| Super| Bet  |
+ *                        |      |      | Bet  | Alt  |      |  |      | Ctrl |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  *
- * tap dances mod+aleph (?)
- * tab
- * ctrl
- * super
- * 
+ * todo: tap dances mod+aleph/bet
  */
     [_MAIN] = LAYOUT(
         KC_TAB,    BP_B, BP_EACU,   BP_P,   BP_O,   BP_EGRV,                                           BP_DCIR,    BP_V,    BP_D,    BP_L,    BP_J,    BP_W,
        KC_LSFT,    BP_A,    BP_U,   BP_I,   BP_E,   BP_COMM,                                              BP_C,    BP_T,    BP_S,    BP_R,    BP_N,    BP_M,
           BP_Z, BP_AGRV,    BP_Y,   BP_X, BP_DOT,      BP_K,   KC_ESC, _______,    _______,   _______, BP_QUOT,    BP_Q,    BP_G,    BP_H,    BP_F, BP_CCED,
-          MO(_ALEPH), KC_LALT, LT(_BET, KC_SPC), KC_ENT, LM(_ALEPH, MOD_LGUI),     KC_BSPC, KC_ENT, MO(_ALEPH), KC_RALT,  MO(_BET)
+          MO(_ALEPH), KC_LGUI, LT(_BET, KC_SPC), MT(MOD_LALT, KC_ENT), KC_BSPC,    KC_BSPC, MT(MOD_RCTL, KC_ENT), MO(_ALEPH), KC_RGUI,  MO(_BET)
     ),
 /*
  * Aleph Layer: Symbols
