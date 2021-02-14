@@ -34,7 +34,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |   Z    |   À  |   Y  |   X  |   .  |   K  | esc  |      |  |      |      |   '? |   Q  |  G   |  H   |   F  |  Ç     |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |Aleph |Super | Space| Enter|bkspc |  |bkspc | Enter| Aleph| Super| Bet  |
- *                        |      |      | Bet  | Alt  |      |  |      | Ctrl |      |      |      |
+ *                        |      |      | Bet  | Ctrl |      |  |      | Alt  |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  *
  * todo: tap dances mod+aleph/bet
@@ -43,7 +43,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,    BP_B, BP_EACU,   BP_P,   BP_O,   BP_EGRV,                                           BP_DCIR,    BP_V,    BP_D,    BP_L,    BP_J,    BP_W,
        KC_LSFT,    BP_A,    BP_U,   BP_I,   BP_E,   BP_COMM,                                              BP_C,    BP_T,    BP_S,    BP_R,    BP_N,    BP_M,
           BP_Z, BP_AGRV,    BP_Y,   BP_X, BP_DOT,      BP_K,   KC_ESC, _______,    _______,   _______, BP_QUOT,    BP_Q,    BP_G,    BP_H,    BP_F, BP_CCED,
-          MO(_ALEPH), KC_LGUI, LT(_BET, KC_SPC), MT(MOD_LALT, KC_ENT), KC_BSPC,    KC_BSPC, MT(MOD_RCTL, KC_ENT), MO(_ALEPH), KC_RGUI,  MO(_BET)
+          MO(_ALEPH), KC_LGUI, LT(_BET, KC_SPC), MT(MOD_LCTL, KC_ENT), KC_BSPC,    KC_BSPC, MT(MOD_LALT, KC_ENT), MO(_ALEPH), KC_RGUI,  MO(_BET)
     ),
 /*
  * Aleph Layer: Symbols
