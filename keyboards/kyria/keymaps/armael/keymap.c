@@ -62,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_ALEPH] = LAYOUT(
       BP_HASH, BP_DQUO, BP_LDAQ, BP_RDAQ, BP_LPRN, BP_RPRN,                                     BP_AT,               BP_PLUS,               BP_MINS, BP_SLSH, BP_ASTR, BP_PERC,
-      _______,  BP_DLR, BP_LABK, MT(MOD_LGUI, BP_RABK), MT(MOD_LSFT, BP_LBRC), BP_RBRC,         BP_MINS, MT(MOD_LSFT, BP_LPRN), MT(MOD_RGUI, BP_RPRN),  BP_EQL,  BP_GRV,  BP_DEG,
+      _______,  BP_DLR, BP_LABK, BP_RABK, BP_LBRC, BP_RBRC,         BP_MINS, BP_LPRN, MT(MOD_RGUI, BP_RPRN),  BP_EQL,  BP_GRV,  BP_DEG,
       _______, _______, BP_LCBR, BP_RCBR, BP_COLN, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, BP_UNDS, _______, _______, _______, _______, _______, _______, _______
     ),
@@ -70,21 +70,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Bet Layer: Number keys, media, navigation
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |      | Up   | Mute | VolUp|                              | Ins  |      | PgUp |      |      |        |
+ * |        |  1   |  2   |  3   |   4  |   5  |                              |  6   |  7   |  8   |  9   |  0   |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      | Left | Down | Right|VolDwn|                              | Del  | Home |PgDown| End  |      |        |
+ * |        | Left |  Up  | Down | Right|VolUp |                              | Del  | Home |PgDown| PgUp | End  |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |  1   |  2   |  3   |  4   |  5   |      |      |  |      |      |  6   |  7   |  8   |  9   |  0   |        |
+ * |        |      |      |      |      |VolDwn| Mute |      |  |      |      | Ins  |      |      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_BET] = LAYOUT(
-      _______, _______, _______,   KC_UP, KC_MUTE, KC_VOLU,                                     KC_INSERT,               _______,                 KC_PGUP, _______, _______, _______,
-      _______, _______, KC_LEFT, MT(MOD_LGUI, KC_DOWN), MT(MOD_LSFT, KC_RGHT), KC_VOLD,            KC_DEL, MT(MOD_LSFT, KC_HOME), MT(MOD_LGUI, KC_PGDOWN),  KC_END, _______, _______,
-      _______,    BP_1,    BP_2,    BP_3,    BP_4,    BP_5, _______, _______, _______, _______,      BP_6,    BP_7,      BP_8,    BP_9,    BP_0, _______,
-                                 _______, _______, _______, _______, _______, _______, _______,   _______, _______, _______
+      _______,    BP_1,    BP_2,    BP_3,    BP_4,    BP_5,                                        BP_6,    BP_7,      BP_8,     BP_9,    BP_0, _______,
+      _______, KC_LEFT,   KC_UP, KC_DOWN, KC_RGHT, KC_VOLU,                                      KC_DEL, KC_HOME, KC_PGDOWN,  KC_PGUP,  KC_END, _______,
+      _______, _______, _______, _______, _______, KC_VOLD, KC_MUTE, _______, _______, _______,  KC_INS, _______,   _______,  _______, _______, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
  * Gimel Layer: Function keys, RGB
