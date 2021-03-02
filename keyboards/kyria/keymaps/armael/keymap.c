@@ -20,73 +20,78 @@ enum layers {
     _MAIN = 0,
     _ALEPH,
     _ALEPH_P,
-    _BET,
+    _BETH,
     _GIMEL
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |  Tab   |   B  |   É  |   P  |   O  |   È  |                              |   ^! |   V  |   D  |   L  |   J  |  W     |
+ * |   Z    |   B  |   É  |   P  |   O  |   È  |                              |   ^! |   V  |   D  |   L  |   J  |  W     |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * | Shift  |  A   |  U   |  I   |  E   |   ,  |                              |   C  |  T   |  S   |   R  |   N  |   M    |
+ * |  Ctrl  |  A   |  U   |  I   |  E   |   ,  |                              |   C  |  T   |  S   |   R  |   N  |   M    |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |   Z    |   À  |   Y  |   X  |   .  |   K  | esc  |      |  |      |      |   '? |   Q  |  G   |  H   |   F  |  Ç     |
+ * |  Shift |   À  |   Y  |   X  |   .  |   K  | esc  |      |  |      | Gimel|   '? |   Q  |  G   |  H   |   F  |  Ç     |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |Aleph |Super | Space| Enter|bkspc |  |bkspc | Enter| Aleph| Super| Bet  |
- *                        |      |      | Bet  | Ctrl |      |  |      | Alt  |      |      |      |
+ *                        |Aleph |Super | Space| Enter| Tab  |  |bkspc | Enter| Aleph| Super| Bet  |
+ *                        |      |      | Bet  | Alt  |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  *
- * todo: tap dances mod+aleph/bet
+ * todo: tap dances mod+aleph/bet ?
+ * issues: ctrl is still a bit uncomfortable because of the extended thumb
+ *         ctrl+space and ctrl+underscore in emacs are a pain, also ctrl+k to some extent
+*
+* caps word? : https://github.com/andrewjrae/qmk_firmware/blob/kyria/keyboards/kyria/keymaps/ajrae/keymap.c
+* (on double tap shift)
  */
     [_MAIN] = LAYOUT(
-        KC_TAB,    BP_B, BP_EACU,   BP_P,   BP_O,   BP_EGRV,                                           BP_DCIR,    BP_V,    BP_D,    BP_L,    BP_J,    BP_W,
-       KC_LSFT,    BP_A,    BP_U,   BP_I,   BP_E,   BP_COMM,                                              BP_C,    BP_T,    BP_S,    BP_R,    BP_N,    BP_M,
-          BP_Z, BP_AGRV,    BP_Y,   BP_X, BP_DOT,      BP_K,   KC_ESC, _______,    _______,   _______, BP_QUOT,    BP_Q,    BP_G,    BP_H,    BP_F, BP_CCED,
-          MO(_ALEPH), KC_LGUI, LT(_BET, KC_SPC), MT(MOD_LCTL, KC_ENT), KC_BSPC,    KC_BSPC, MT(MOD_LALT, KC_ENT), MO(_ALEPH), KC_RGUI,  MO(_BET)
+          BP_Z,    BP_B, BP_EACU,   BP_P,   BP_O,   BP_EGRV,                                               BP_DCIR,    BP_V,    BP_D,    BP_L,    BP_J,    BP_W,
+       KC_LCTL,    BP_A,    BP_U,   BP_I,   BP_E,   BP_COMM,                                                  BP_C,    BP_T,    BP_S,    BP_R,    BP_N,    BP_M,
+       KC_LSFT, BP_AGRV,    BP_Y,   BP_X, BP_DOT,      BP_K,   KC_ESC, _______,    _______, MO(_GIMEL),    BP_QUOT,    BP_Q,    BP_G,    BP_H,    BP_F, BP_CCED,
+          MO(_ALEPH), KC_LGUI, LT(_BETH, KC_SPC), MT(MOD_LALT, KC_ENT), KC_TAB,    KC_BSPC,     KC_ENT, MO(_ALEPH), KC_RGUI,  MO(_BETH)
     ),
 /*
- * Aleph Layer: Symbols
+ * Aleph Layer: Symbols and intl/fr
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |   $    |  "   |  /(«)|  \(»)|  œ   |  &   |                              |  @   |  +   |  -   |  /   |  *   |  %     |
+ * |   $    |  "   |  /(«)|  \(»)|  œ   |      |                              |  @   |  <   |  >   |  /   |  *   |  %     |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * | Aleph+ |  |   |  ù   |  ¨(D)|  [   |  ]   |                              |  -   |  (   |  )   |  =   |  `   |  °     |
+ * |        |  |   |  ù   |  ¨(D)|  &   |  +   |                              |  #   |  (   |  )   |  =   |  -   |  °     |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |   #    |  æ   |  {   |   }  |  :   |  ~   |      |      |  |      |      |      |  <   |  >   |      |      |        |
+ * | Aleph+ |  æ   |  {   |   }  |  :   |  ~   |      |      |  |      |      |  `   |  [   |  ]   |  μ(D)|      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |  _   |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_ALEPH] = LAYOUT(
-           BP_DLR, BP_DQUO, BP_LDAQ, BP_RDAQ,   BP_OE, BP_AMPR,                                           BP_AT, BP_PLUS, BP_MINS, BP_SLSH, BP_ASTR, BP_PERC,
-     MO(_ALEPH_P),  BP_DLR, BP_LABK, BP_RABK, BP_LBRC, BP_RBRC,                                         BP_MINS, BP_LPRN, BP_RPRN,  BP_EQL,  BP_GRV,  BP_DEG,
-          BP_HASH, _______, BP_LCBR, BP_RCBR, BP_COLN, BP_TILD, _______, _______,     _______, _______, _______, _______, _______, _______, _______, _______,
+           BP_DLR, BP_DQUO, BP_LDAQ, BP_RDAQ,   BP_OE, _______,                                           BP_AT, BP_LABK, BP_RABK, BP_SLSH, BP_ASTR, BP_PERC,
+          _______, BP_PIPE, BP_UGRV, BP_DIAE, BP_AMPR, BP_PLUS,                                         BP_HASH, BP_LPRN, BP_RPRN,  BP_EQL, BP_MINS,  BP_DEG,
+     MO(_ALEPH_P),   BP_AE, BP_LCBR, BP_RCBR, BP_COLN, BP_TILD, _______, _______,     _______, _______,  BP_GRV, BP_LBRC, BP_RBRC, BP_DGRK, _______, _______,
                                      _______, _______, BP_UNDS, _______, _______,     _______, _______, _______, _______, _______
     ),
 /*
  * Aleph+: remaining bits of the altgr layer (mostly intl dead keys)
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |  ´(D)|      |      |  `(D)|                              |      |      |      |  ð   |  ø(D)|        |
+ * |        |      |  ´(D)|      |      |  `(D)|                              |      |      |  ð   |  ø(D)|      |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |      |      |      |   €  |      |                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      |   …  |      |      |      |  |      |      |      |  °(D)|  μ(D)|      |      |        |
+ * |        |      |      |      |   …  |      |      |      |  |      |      |      |  °(D)|      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_ALEPH_P] = LAYOUT(
-      _______, _______, BP_ACUT, _______, _______, BP_DGRV,                                     _______, _______, _______,  BP_ETH, BP_DSLS, _______,
+      _______, _______, BP_ACUT, _______, _______, BP_DGRV,                                     _______, _______,  BP_ETH, BP_DSLS, _______, _______,
       _______, _______, _______, _______, BP_EURO, _______,                                     _______, _______, _______, _______, _______, _______,
-      _______, _______, _______, _______, BP_ELLP, _______, _______, _______, _______, _______, _______, BP_RNGA, BP_DGRK, _______, _______, _______,
+      _______, _______, _______, _______, BP_ELLP, _______, _______, _______, _______, _______, _______, BP_RNGA, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
- * Bet Layer: Number keys, media, navigation
+ * Beth Layer: Number keys, media, navigation
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |        |  1   |  2   |  3   |   4  |   5  |                              |  6   |  7   |  8   |  9   |  0   |        |
@@ -99,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    [_BET] = LAYOUT(
+    [_BETH] = LAYOUT(
       _______,    BP_1,    BP_2,    BP_3,    BP_4,    BP_5,                                        BP_6,    BP_7,      BP_8,     BP_9,    BP_0, _______,
       _______, KC_LEFT,   KC_UP, KC_DOWN, KC_RGHT, KC_VOLU,                                      KC_DEL, KC_HOME, KC_PGDOWN,  KC_PGUP,  KC_END, _______,
       _______, _______, _______, _______, _______, KC_VOLD, KC_MUTE, _______, _______, _______,  KC_INS, _______,   _______,  _______, _______, _______,
@@ -156,9 +161,9 @@ void keyboard_post_init_user(void) {
 #endif
 
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, _ALEPH, _BET, _GIMEL);
-}
+/* layer_state_t layer_state_set_user(layer_state_t state) { */
+/*     return update_tri_layer_state(state, _ALEPH, _BETH, _GIMEL); */
+/* } */
 
 #ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
@@ -188,6 +193,25 @@ static void render_kyria_logo(void) {
 /*   oled_write_P(qmk_logo, false); */
 /* } */
 
+layer_state_t layer_state_set_user(layer_state_t state) {
+    /* if (get_highest_layer(state) == _ALEPH && (get_mods() & MOD_MASK_SHIFT)) { */
+    /*     layer_on(_ALEPH_P); */
+    /*     layer_off(_ALEPH); */
+    /* } */
+    /* state = update_tri_layer_state(state, _ALEPH, _BETH, _GIMEL); */
+
+    /* if (IS_LAYER_ON_STATE(state, _ALEPH)) { */
+    /*     if (get_mods() & MOD_MASK_SHIFT) */
+    /*         state = state | (1UL << _ALEPH_P); */
+    /*     else */
+    /*         state = state & ~(1UL << _ALEPH_P); */
+    /* } */
+    /* if (IS_LAYER_OFF_STATE(state, _ALEPH)) { */
+    /*     state = state & ~(1UL << _ALEPH_P); */
+    /* } */
+    return state;
+}
+
 static void render_status(void) {
     // QMK Logo and version information
     /* render_qmk_logo(); */
@@ -205,8 +229,8 @@ static void render_status(void) {
         case _ALEPH_P:
             oled_write_P(PSTR("Aleph+\n"), false);
             break;
-        case _BET:
-            oled_write_P(PSTR("Bet\n"), false);
+        case _BETH:
+            oled_write_P(PSTR("Beth\n"), false);
             break;
         case _GIMEL:
             oled_write_P(PSTR("Gimel\n"), false);
