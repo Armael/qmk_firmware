@@ -38,8 +38,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  *
  * todo: tap dances mod+aleph/bet ?
- * issues: ctrl is still a bit uncomfortable because of the extended thumb
- *         ctrl+space and ctrl+underscore in emacs are a pain, also ctrl+k to some extent
 *
 * caps word? : https://github.com/andrewjrae/qmk_firmware/blob/kyria/keyboards/kyria/keymaps/ajrae/keymap.c
 * (on double tap shift)
@@ -80,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |        |      |      |      |   …  |      |      |      |  |      |      |      |  °(D)|      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        |      |      | Space|      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
@@ -88,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______, _______, BP_ACUT, _______, _______, BP_DGRV,                                     _______, _______,  BP_ETH, BP_DSLS, _______, _______,
       _______, _______, _______, _______, BP_EURO, _______,                                     _______, _______, _______, _______, _______, _______,
       _______, _______, _______, _______, BP_ELLP, _______, _______, _______, _______, _______, _______, BP_RNGA, _______, _______, _______, _______,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+                                 _______, _______,  KC_SPC, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
  * Beth Layer: Number keys, media, navigation
@@ -192,6 +190,15 @@ static void render_kyria_logo(void) {
 
 /*   oled_write_P(qmk_logo, false); */
 /* } */
+
+bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(_BETH, KC_SPC):
+            return true;
+        default:
+            return false;
+    }
+}
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     /* if (get_highest_layer(state) == _ALEPH && (get_mods() & MOD_MASK_SHIFT)) { */
