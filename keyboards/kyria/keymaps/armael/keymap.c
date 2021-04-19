@@ -15,13 +15,24 @@
  */
 #include QMK_KEYBOARD_H
 #include "keymap_bepo.h"
+#include "sendstring_bepo.h"
 
 enum layers {
     _MAIN = 0,
     _ALEPH,
-    _ALEPH_P,
     _BETH,
-    _GIMEL
+    _ALEPH_P,
+    _GIMEL,
+    _DALET
+};
+
+enum custom_keycodes {
+    MYKC_ESPLT = SAFE_RANGE,
+    MYKC_EBEGN,
+    MYKC_EEND,
+    MYKC_EPREV,
+    MYKC_ENEXT,
+    MYKC_ECLOSE
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -33,12 +44,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |  Shift |   À  |   Y  |   X  |   .  |   K  | esc  |      |  |      | Gimel|   '? |   Q  |  G   |  H   |   F  |  Ç     |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |Aleph |Super | Space| Enter| Tab  |  |bkspc | Enter| Aleph| Super| Bet  |
+ *                        |Dalet |Super | Space| Enter| Tab  |  |bkspc | Enter| Aleph| Super|Dalet |
  *                        |      |      | Bet  | Alt  |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  *
- * todo: tap dances mod+aleph/bet ?
-*
 * caps word? : https://github.com/andrewjrae/qmk_firmware/blob/kyria/keyboards/kyria/keymaps/ajrae/keymap.c
 * (on double tap shift)
  */
@@ -46,7 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
           BP_Z,    BP_B, BP_EACU,   BP_P,   BP_O,   BP_EGRV,                                               BP_DCIR,    BP_V,    BP_D,    BP_L,    BP_J,    BP_W,
        KC_LCTL,    BP_A,    BP_U,   BP_I,   BP_E,   BP_COMM,                                                  BP_C,    BP_T,    BP_S,    BP_R,    BP_N,    BP_M,
        KC_LSFT, BP_AGRV,    BP_Y,   BP_X, BP_DOT,      BP_K,   KC_ESC, _______,    _______, MO(_GIMEL),    BP_QUOT,    BP_Q,    BP_G,    BP_H,    BP_F, BP_CCED,
-          MO(_ALEPH), KC_LGUI, LT(_BETH, KC_SPC), MT(MOD_LALT, KC_ENT), KC_TAB,    KC_BSPC,     KC_ENT, MO(_ALEPH), KC_RGUI,  MO(_BETH)
+         OSL(_DALET), KC_LGUI, LT(_BETH, KC_SPC), MT(MOD_LALT, KC_ENT), KC_TAB,    KC_BSPC,     KC_ENT, MO(_ALEPH), KC_RGUI, OSL(_DALET)
     ),
 /*
  * Aleph Layer: Symbols and intl/fr
@@ -56,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |  |   |  ù   |  ¨(D)|  &   |  +   |                              |  #   |  (   |  )   |  =   |  -   |  °     |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * | Aleph+ |  æ   |  {   |   }  |  :   |  ~   |      |      |  |      |      |  °(D)|  [   |  ]   |  μ(D)|      |        |
+ * |        |  æ   |  {   |   }  |  :   |  ~   |      |      |  |      |      |  °(D)|  [   |  ]   |  μ(D)|      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |  _   |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -65,28 +74,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_ALEPH] = LAYOUT(
            BP_DLR, BP_DQUO, BP_LDAQ, BP_RDAQ,   BP_OE,  BP_GRV,                                           BP_AT, BP_LABK, BP_RABK, BP_SLSH, BP_ASTR, BP_PERC,
           _______, BP_PIPE, BP_UGRV, BP_DIAE, BP_AMPR, BP_PLUS,                                         BP_HASH, BP_LPRN, BP_RPRN,  BP_EQL, BP_MINS,  BP_DEG,
-     MO(_ALEPH_P),   BP_AE, BP_LCBR, BP_RCBR, BP_COLN, BP_TILD, _______, _______,     _______, _______, BP_RNGA, BP_LBRC, BP_RBRC, BP_DGRK, _______, _______,
+          _______,   BP_AE, BP_LCBR, BP_RCBR, BP_COLN, BP_TILD, _______, _______,     _______, _______, BP_RNGA, BP_LBRC, BP_RBRC, BP_DGRK, _______, _______,
                                      _______, _______, BP_UNDS, _______, _______,     _______, _______, _______, _______, _______
-    ),
-/*
- * Aleph+: remaining bits of the altgr layer (mostly intl dead keys)
- *
- * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |  ´(D)|  §   |      |  `(D)|                              |      |      |  ð   |  ø(D)|      |        |
- * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      |      |      |   €  |      |                              |      |      |      |      |      |        |
- * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      |   …  |      |      |      |  |      |      |      |      |      |      |      |        |
- * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      | Space|      |      |  |      |      |      |      |      |
- *                        |      |      |      |      |      |  |      |      |      |      |      |
- *                        `----------------------------------'  `----------------------------------'
- */
-    [_ALEPH_P] = LAYOUT(
-      _______, _______, BP_ACUT, BP_SECT, _______, BP_DGRV,                                     _______, _______,  BP_ETH, BP_DSLS, _______, _______,
-      _______, _______, _______, _______, BP_EURO, _______,                                     _______, _______, _______, _______, _______, _______,
-      _______, _______, _______, _______, BP_ELLP, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-                                 _______, _______,  KC_SPC, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
  * Beth Layer: Number keys, media, navigation
@@ -98,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |        |      |      |      |      |VolDwn| Mute |      |  |      |      | Ins  |      |      |      |      |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |Aleph+|      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
@@ -106,7 +95,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______,    BP_1,    BP_2,    BP_3,    BP_4,    BP_5,                                        BP_6,    BP_7,      BP_8,     BP_9,    BP_0, _______,
       _______, KC_LEFT,   KC_UP, KC_DOWN, KC_RGHT, KC_VOLU,                                      KC_DEL, KC_HOME, KC_PGDOWN,  KC_PGUP,  KC_END, _______,
       _______, _______, _______, _______, _______, KC_VOLD, KC_MUTE, _______, _______, _______,  KC_INS, _______,   _______,  _______, _______, _______,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+                                 _______, _______, _______, _______, _______, _______, _______, MO(_ALEPH_P), _______, _______
+    ),
+/*
+ * Aleph+: remaining bits of the altgr layer (mostly intl dead keys)
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |        |      |  ´(D)|  §   |      |  `(D)|                              |      |      |  ð   |  ø(D)|      |        |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |        |      |      |      |   €  |      |                              |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * |        |      |      |      |   …  |      |      |      |  |      |      |      |      |      |      |      |        |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |      |      |  _   |      |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_ALEPH_P] = LAYOUT(
+      _______, _______, BP_ACUT, BP_SECT, _______, BP_DGRV,                                     _______, _______,  BP_ETH, BP_DSLS, _______, _______,
+      _______, _______, _______, _______, BP_EURO, _______,                                     _______, _______, _______, _______, _______, _______,
+      _______, _______, _______, _______, BP_ELLP, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+                                 _______, BP_UNDS, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 /*
  * Gimel Layer: Function keys, RGB
@@ -128,6 +137,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD,_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
+/*
+ * Dalet layer: macros
+ *
+ * ,-------------------------------------------.                              ,-------------------------------------------.
+ * |        |      |      |      |      |      |                              |      |      |      |      |      |        |
+ * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
+ * |        | EPREV| EBEGN| EEND | ENEXT|      |                              |      |      | ESPLT|      |      |        |
+ * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
+ * |        |      |      |      |      |      |      |      |  |      |      |      |ECLOSE|      |      |      |        |
+ * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
+ *                        |      |      | Space|      |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        `----------------------------------'  `----------------------------------'
+ */
+    [_DALET] = LAYOUT(
+      _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______, _______,
+      _______, MYKC_EPREV, MYKC_EBEGN, MYKC_EEND, MYKC_ENEXT, _______,                          _______, _______, MYKC_ESPLT, _______, _______, _______,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, MYKC_ECLOSE, _______, _______, _______, _______,
+                                 _______, _______,  KC_SPC, _______, _______, _______, _______, _______, _______, _______
+    )
 // /*
 //  * Layer template
 //  *
@@ -150,6 +179,67 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //     ),
 };
 
+/* const uint16_t PROGMEM combo_1[] = {BP_A, BP_B, COMBO_END}; */
+/* const uint16_t PROGMEM combo_2[] = {BP_U, BP_EACU, COMBO_END}; */
+/* const uint16_t PROGMEM combo_3[] = {BP_I, BP_P, COMBO_END}; */
+/* const uint16_t PROGMEM combo_4[] = {BP_E, BP_O, COMBO_END}; */
+/* const uint16_t PROGMEM combo_5[] = {BP_COMM, BP_EGRV, COMBO_END}; */
+/* const uint16_t PROGMEM combo_6[] = {BP_C, BP_DCIR, COMBO_END}; */
+/* const uint16_t PROGMEM combo_7[] = {BP_T, BP_V, COMBO_END}; */
+/* const uint16_t PROGMEM combo_8[] = {BP_S, BP_D, COMBO_END}; */
+/* const uint16_t PROGMEM combo_9[] = {BP_R, BP_L, COMBO_END}; */
+/* const uint16_t PROGMEM combo_0[] = {BP_N, BP_J, COMBO_END}; */
+
+/* combo_t key_combos[COMBO_COUNT] = { */
+/*   COMBO(combo_1, BP_1), */
+/*   COMBO(combo_2, BP_2), */
+/*   COMBO(combo_3, BP_3), */
+/*   COMBO(combo_4, BP_4), */
+/*   COMBO(combo_5, BP_5), */
+/*   COMBO(combo_6, BP_6), */
+/*   COMBO(combo_7, BP_7), */
+/*   COMBO(combo_8, BP_8), */
+/*   COMBO(combo_9, BP_9), */
+/*   COMBO(combo_0, BP_0), */
+/* }; */
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case MYKC_EPREV:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("x")"p");
+      }
+      return false; // Skip all further processing of this key
+    case MYKC_ENEXT:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("x")"o");
+      }
+      return false;
+    case MYKC_ECLOSE:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("x")"0"SS_LCTL("x")"+");
+      }
+      return false;
+    case MYKC_ESPLT:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LCTL("x")"3"SS_LCTL("x")"+");
+      }
+      return false;
+    case MYKC_EBEGN:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LALT("<"));
+      }
+      return false;
+    case MYKC_EEND:
+      if (record->event.pressed) {
+          SEND_STRING(SS_LALT(">"));
+      }
+      return false;
+    default:
+      return true; // Process all other keycodes normally
+  }
+}
+
 #ifdef RGBLIGHT_ENABLE
 void keyboard_post_init_user(void) {
   rgblight_enable_noeeprom(); // Enables RGB, without saving settings
@@ -159,11 +249,6 @@ void keyboard_post_init_user(void) {
 #endif
 
 
-/* layer_state_t layer_state_set_user(layer_state_t state) { */
-/*     return update_tri_layer_state(state, _ALEPH, _BETH, _GIMEL); */
-/* } */
-
-#ifdef OLED_DRIVER_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 	return OLED_ROTATION_180;
 }
@@ -205,7 +290,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     /*     layer_on(_ALEPH_P); */
     /*     layer_off(_ALEPH); */
     /* } */
-    /* state = update_tri_layer_state(state, _ALEPH, _BETH, _GIMEL); */
+    /* state = update_tri_layer_state(state, _BETH, _ALEPH, _ALEPH_P); */
 
     /* if (IS_LAYER_ON_STATE(state, _ALEPH)) { */
     /*     if (get_mods() & MOD_MASK_SHIFT) */
@@ -242,6 +327,9 @@ static void render_status(void) {
         case _GIMEL:
             oled_write_P(PSTR("Gimel\n"), false);
             break;
+        case _DALET:
+            oled_write_P(PSTR("Dalet\n"), false);
+            break;
         default:
             oled_write_P(PSTR("?\n"), false);
     }
@@ -260,4 +348,3 @@ void oled_task_user(void) {
         render_kyria_logo();
     }
 }
-#endif

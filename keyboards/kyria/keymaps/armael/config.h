@@ -38,6 +38,11 @@
 
 
 // #define IGNORE_MOD_TAP_INTERRUPT
-#define TAPPING_TERM 220
+#define TAPPING_TERM 190
 
 #define TAPPING_FORCE_HOLD_PER_KEY
+
+/* #define COMBO_COUNT 10 */
+/* #define COMBO_TERM 150 */
+
+#define MASTER_RIGHT
